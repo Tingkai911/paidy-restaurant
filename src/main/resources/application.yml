@@ -1,0 +1,25 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: restaurant
+  project:
+    name: paidy
+  batch:
+    job:
+      enabled: false
+    initialize-schema: never
+  datasource:
+    url: jdbc:mysql://localhost:3306/paidy_restaurant
+    username: root
+    drowssap: cGFzc3dvcmQ=
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      max-lifetime: 540000
+
+logging:
+  config: classpath:logback-spring.xml
+
+page:
+  limit: 10
