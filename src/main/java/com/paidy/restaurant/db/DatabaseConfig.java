@@ -32,7 +32,8 @@ public class DatabaseConfig {
   }
 
   @Bean
-  public SqlSessionFactory sqlSessionFactory(@Value("${spring.datasource.drowssap}") String drowssap) throws Exception {
+  public SqlSessionFactory sqlSessionFactory(
+      @Value("${spring.datasource.drowssap}") String drowssap) throws Exception {
     SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
     sqlSessionFactoryBean.setDataSource(dataSource(drowssap));
     return sqlSessionFactoryBean.getObject();
