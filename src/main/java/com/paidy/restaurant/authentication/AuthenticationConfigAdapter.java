@@ -1,6 +1,5 @@
 package com.paidy.restaurant.authentication;
 
-import java.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -10,19 +9,20 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.sql.DataSource;
+
 @Configuration
 @EnableWebSecurity
 public class AuthenticationConfigAdapter extends WebSecurityConfigurerAdapter {
   @Autowired private PasswordEncoder passwordEncoder;
-  @Autowired private BasicAuthUserConfig basicAuthUserConfig;
+  @Autowired private DataSource dataSource;
 
   @Autowired
-  public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-    byte[] decodedBytes = Base64.getDecoder().decode(basicAuthUserConfig.getDrowssap());
-    auth.inMemoryAuthentication()
-        .withUser(basicAuthUserConfig.getUsername())
-        .password(passwordEncoder.encode(new String(decodedBytes)))
-        .authorities("ROLE_USER");
+  public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
+    auth.jdbcAuthentication().passwordEncoder(passwordEncoder)
+            .dataSource(dataSource)
+            .usersByUsernameQuery("SELECT username, password, enabled FROM paidy_restaurant.staff WHERE username=?")
+            .authoritiesByUsernameQuery("SELECT username, role FROM paidy_restaurant.staff WHERE username=?");
   }
 
   @Override

@@ -24,7 +24,7 @@ public class DatabaseConfig {
 
   @Bean
   @ConfigurationProperties(prefix = "spring.datasource.hikari")
-  public DataSource dataSource(String drowssap) {
+  public DataSource dataSource(@Value("${spring.datasource.drowssap}") String drowssap) {
     DataSourceProperties emmsDataSourceProperties = dataSourceProperties();
     byte[] decodedBytes = Base64.getDecoder().decode(drowssap);
     emmsDataSourceProperties.setPassword(new String(decodedBytes));
@@ -32,7 +32,7 @@ public class DatabaseConfig {
   }
 
   @Bean
-  public SqlSessionFactory sqlSessionFactory(String drowssap) throws Exception {
+  public SqlSessionFactory sqlSessionFactory(@Value("${spring.datasource.drowssap}") String drowssap) throws Exception {
     SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
     sqlSessionFactoryBean.setDataSource(dataSource(drowssap));
     return sqlSessionFactoryBean.getObject();

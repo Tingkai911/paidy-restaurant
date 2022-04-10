@@ -23,7 +23,3 @@ logging:
 
 page:
   limit: 10
-
-basic-auth:
-  username: user
-  drowssap: cGFzc3dvcmQ=

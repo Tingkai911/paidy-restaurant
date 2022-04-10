@@ -7,4 +7,8 @@ import lombok.EqualsAndHashCode;
 @Data
 public class Staff extends AbstractMyBatisEntity {
   private String name;
+  private String role;
+  private String password;
+  private String username;
+  private boolean enabled;
 }
