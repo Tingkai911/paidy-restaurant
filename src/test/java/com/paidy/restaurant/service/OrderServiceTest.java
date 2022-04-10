@@ -9,6 +9,8 @@ import static org.mockito.Mockito.when;
 
 import com.paidy.restaurant.db.entity.Order;
 import com.paidy.restaurant.exception.OrderServiceException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +25,7 @@ public class OrderServiceTest {
   @BeforeEach
   public void init() {
     sqlSessionTemplate = mock(SqlSessionTemplate.class);
-    orderService = new OrderService(sqlSessionTemplate, pageLimit);
+    orderService = new OrderService(sqlSessionTemplate, pageLimit, 5, 10);
   }
 
   @Test
@@ -62,6 +64,8 @@ public class OrderServiceTest {
   @Test
   public void testInsertOrderSuccess() {
     Order order = new Order();
+    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    order.setExpectedDeliverTime(LocalDateTime.parse("2022-01-01 02:00:00", dateTimeFormatter));
     order.setStaffId(100L);
     List<Order> orderList = Arrays.asList(order);
     ArgumentCaptor<String> stringArgumentCaptor = ArgumentCaptor.forClass(String.class);

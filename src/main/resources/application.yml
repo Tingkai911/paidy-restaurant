@@ -6,10 +6,6 @@ spring:
     name: restaurant
   project:
     name: paidy
-  batch:
-    job:
-      enabled: false
-    initialize-schema: never
   datasource:
     url: jdbc:mysql://localhost:3306/paidy_restaurant
     username: root
@@ -23,3 +19,7 @@ logging:
 
 page:
   limit: 10
+
+random-range:
+    min: 5
+    max: 15

@@ -7,6 +7,7 @@ import com.paidy.restaurant.exception.OrderServiceException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,11 +19,18 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderService {
   private final SqlSessionTemplate sqlSessionTemplate;
   private final int pageLimit;
+  private final int min;
+  private final int max;
 
   public OrderService(
-      SqlSessionTemplate sqlSessionTemplate, @Value("${page.limit}") int pageLimit) {
+      SqlSessionTemplate sqlSessionTemplate,
+      @Value("${page.limit}") Integer pageLimit,
+      @Value("${random-range.min}") Integer min,
+      @Value("${random-range.max}") Integer max) {
     this.sqlSessionTemplate = sqlSessionTemplate;
     this.pageLimit = pageLimit;
+    this.min = min;
+    this.max = max;
   }
 
   @Transactional
@@ -49,6 +57,14 @@ public class OrderService {
   @Transactional
   public void insertOrders(List<Order> orderList) {
     try {
+      // if expected deliver time is not set, randomly assign a duration between 5 to 15 mins
+      orderList.forEach(
+          order -> {
+            if (order.getExpectedDeliverTime() == null) {
+              order.setExpectedDeliverTime(
+                  order.getCreatedTime().plusMinutes(getRandomNumberInRange()));
+            }
+          });
       Map<String, Object> params = new HashMap<>();
       params.put("orderList", orderList);
       sqlSessionTemplate.insert("insertOrders", params);
@@ -56,6 +72,14 @@ public class OrderService {
       log.error(e.getMessage(), e);
       throw new OrderServiceException(e.getMessage());
     }
+  }
+
+  private int getRandomNumberInRange() {
+    if (min >= max) {
+      throw new IllegalArgumentException("max must be greater than min");
+    }
+    Random r = new Random();
+    return r.nextInt((max - min) + 1) + min;
   }
 
   public List<Order> getOrdersByTableNumber(int tableNumber, int pageNo, boolean served) {
