@@ -1,0 +1,254 @@
+{
+	"info": {
+		"_postman_id": "8e8829fc-dfde-4608-9e05-348b50fe676c",
+		"name": "restaurant",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET - get all menu items",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8083/api/v1.0/menu/items?page=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"api",
+						"v1.0",
+						"menu",
+						"items"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET - search menu by name",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8083/api/v1.0/menu/search?page=1&name=ramen",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"api",
+						"v1.0",
+						"menu",
+						"search"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "name",
+							"value": "ramen"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET - select orders",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8083/api/v1.0/order/status?page=1&tableNumber=10&served=false",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"api",
+						"v1.0",
+						"order",
+						"status"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "tableNumber",
+							"value": "10"
+						},
+						{
+							"key": "served",
+							"value": "false"
+						},
+						{
+							"key": "menuId",
+							"value": "1",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST - insert orders",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "gordon",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"createdTime\": \"2022-01-01 01:00:00\",\n        \"status\": \"ordered\",\n        \"menuId\": 1,\n        \"staffId\": 1,\n        \"request\": \"no veg\",\n        \"tableNumber\": 10\n    },\n    {\n        \"createdTime\": \"2022-01-01 01:00:00\",\n        \"expectedDeliverTime\": \"2022-01-01 03:00:00\",\n        \"status\": \"ordered\",\n        \"menuId\": 1,\n        \"staffId\": 1,\n        \"request\": \"no veg\",\n        \"tableNumber\": 10\n    }\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8083/api/v1.0/order/insert",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"api",
+						"v1.0",
+						"order",
+						"insert"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE - order",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "roger",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8083/api/v1.0/order/delete?id=74",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"api",
+						"v1.0",
+						"order",
+						"delete"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "74"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT - update order",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "jamie",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "password",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 73,\n    \"menuId\": 1,\n    \"staffId\": 1,\n    \"tableNumber\": 10,\n    \"createdTime\": \"2022-01-01 02:00:00\",\n    \"expectedDeliverTime\": \"2022-01-01 03:00:00\",\n    \"actualDeliverTime\": \"2022-01-01 03:00:00\",\n    \"status\": \"served\",\n    \"request\": \"no veg\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8083/api/v1.0/order/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"api",
+						"v1.0",
+						"order",
+						"update"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
